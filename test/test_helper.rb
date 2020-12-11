@@ -9,5 +9,12 @@ class ActiveSupport::TestCase
   # Setup all fixtures in test/fixtures/*.yml for all tests in alphabetical order.
   fixtures :all
 
-  # Add more helper methods to be used by all tests here...
+  def new_product_with(image:)
+    new_product = Product.new(
+      title: 'My cool Title',
+      description: 'My cool description',
+      price: 55.99,
+      image_url: image
+    )
+  end
 end
