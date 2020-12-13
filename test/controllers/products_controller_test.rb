@@ -46,4 +46,15 @@ class ProductsControllerTest < ActionDispatch::IntegrationTest
 
     assert_redirected_to products_url
   end
+
+  test "Show, Edit, Destroy links for products should be present" do
+    get products_path
+    assert_template 'products/index'
+    products = assigns(:products)
+    products.each do |product|
+      assert_select 'a[href=?]', product_path(product), text: 'Show'
+      assert_select 'a[href=?]', edit_product_path(product), text: 'Edit'
+      assert_select 'a[href=?]', product_path(product), text: 'Destroy'
+    end
+  end
 end
