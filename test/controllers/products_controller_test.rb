@@ -47,6 +47,12 @@ class ProductsControllerTest < ActionDispatch::IntegrationTest
     assert_redirected_to products_url
   end
 
+  test "Should not delete product when referenced by line item" do
+    assert_no_difference 'Product.count' do
+      delete product_path(products(:two))
+    end
+  end
+
   test "Show, Edit, Destroy links for products should be present" do
     get products_path
     assert_template 'products/index'
