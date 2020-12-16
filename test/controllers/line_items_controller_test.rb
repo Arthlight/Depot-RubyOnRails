@@ -24,7 +24,7 @@ class LineItemsControllerTest < ActionDispatch::IntegrationTest
     follow_redirect!
 
     assert_select 'h2', 'Your Cart'
-    assert_select 'li', current_product.title
+    assert_select 'li', "1 \u00d7 #{current_product.title}"
   end
 
   test "should show line_item" do
