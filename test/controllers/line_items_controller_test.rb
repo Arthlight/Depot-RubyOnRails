@@ -24,7 +24,34 @@ class LineItemsControllerTest < ActionDispatch::IntegrationTest
     follow_redirect!
 
     assert_select 'h2', 'Your Cart'
-    assert_select 'li', "1 \u00d7 #{current_product.title}"
+    assert_select 'td', "#{current_product.title}"
+  end
+
+  test "should create separate product entries" do
+    first_product = products(:one)
+    post line_items_path, params: { product_id: first_product.id }
+
+    second_product = products(:two)
+    post line_items_path, params: { product_id: second_product.id }
+
+    get cart_path(session[:cart_id])
+
+    assert_select 'td', "#{first_product.title}"
+    assert_select 'td', "#{second_product.title}"
+
+  end
+
+  test "should not create separate product entries and instead increase quantity" do
+    first_product = products(:one)
+    post line_items_path, params: { product_id: first_product.id }
+
+    first_product = products(:one)
+    post line_items_path, params: { product_id: first_product.id }
+
+    get cart_path(session[:cart_id])
+
+    assert_select 'td', "#{first_product.title}"
+    assert_select 'td.quantity', '2'
   end
 
   test "should show line_item" do
@@ -38,7 +65,7 @@ class LineItemsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "should update line_item" do
-    patch line_item_url(@line_item), params: { line_item: { cart_id: @line_item.cart_id, product_id: @line_item.product_id } }
+    patch line_item_url(@line_item), params: { line_item: { product_id: @line_item.product_id } }
     assert_redirected_to line_item_url(@line_item)
   end
 
