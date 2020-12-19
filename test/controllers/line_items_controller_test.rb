@@ -27,6 +27,16 @@ class LineItemsControllerTest < ActionDispatch::IntegrationTest
     assert_select 'td', "#{current_product.title}"
   end
 
+  test "should create line item via ajax" do
+    current_product = products(:ruby)
+    assert_difference 'LineItem.count' do
+      post line_items_path, params: { product_id: current_product.id }, xhr: true
+    end
+
+    assert_response :success
+    assert_match /<tr class=\\"line-item-highlight/, @response.body
+  end
+
   test "should create separate product entries" do
     first_product = products(:one)
     post line_items_path, params: { product_id: first_product.id }
