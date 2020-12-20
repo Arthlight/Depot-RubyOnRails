@@ -1,5 +1,6 @@
-cart = document.getElementById("cart")
-cart.innerHTML = "<%= j render(@cart) %>"
+var cart_element = document.getElementById("cart"); // needs to be var and not const in order to work in Safari
+cart_element.innerHTML = "<%= j render(@cart) %>"
+cart_element.style.display = 'block';
 
-notice = document.getElementById("notice")
+notice = document.getElementById("notice");
 if (notice) notice.style.display = "none"

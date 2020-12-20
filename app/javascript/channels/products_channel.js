@@ -10,6 +10,9 @@ consumer.subscriptions.create("ProductsChannel", {
   },
 
   received(data) {
-    // Called when there's incoming data on the websocket for this channel
+    const mainElement = document.querySelector('main.store');
+    if (mainElement) {
+      mainElement.innerHTML = data.html;
+    }
   }
 });
