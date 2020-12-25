@@ -18,3 +18,22 @@ class ActiveSupport::TestCase
     )
   end
 end
+
+module AuthenticationHelpers
+
+  def login_as(user)
+    session[:user_id] = user.id if User.find_by(id: user.id)
+  end
+
+  def logout
+    session[:user_id] = nil
+  end
+end
+
+class ActionDispatch::IntegrationTest
+  include AuthenticationHelpers
+end
+
+class ActionDispatch::SystemTestCase
+  include AuthenticationHelpers
+end
